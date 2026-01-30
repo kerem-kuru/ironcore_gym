@@ -1,0 +1,178 @@
+/** Backend API adresi (Django) */
+export const API_BASE_URL = 'http://127.0.0.1:8000/api';
+
+/** Fallback: API yanıt vermezse kullanılacak sabit veriler */
+export const MEMBERSHIP_PLANS = [
+  {
+    id: 1,
+    name: "Iron Starter",
+    price: 399,
+    period: "Aylık",
+    features: ["Tüm şubelere erişim", "Standart soyunma dolabı", "Ücretsiz Wi-Fi", "08:00 - 22:00 Erişim"],
+  },
+  {
+    id: 2,
+    name: "Gold Pro",
+    price: 899,
+    period: "3 Aylık",
+    recommended: true,
+    features: ["7/24 Erişim", "Özel antrenör (Aylık 2 seans)", "Sauna & Buhar odası", "Supplement indirimi (%10)"],
+  },
+  {
+    id: 3,
+    name: "Titanium Elite",
+    price: 2999,
+    period: "Yıllık",
+    features: ["Sınırsız 7/24 Erişim", "Sınırsız Özel Ders", "Tüm spa imkanları", "Özel park yeri", "Misafir getirme hakkı"],
+  },
+];
+
+export const PRODUCTS = [
+  {
+    id: 1,
+    name: "Whey Protein Isolate",
+    category: "Protein",
+    price: 850,
+    description: "Hızlı emilim sağlayan saf izole protein tozu. Çikolata aromalı.",
+    image: "https://picsum.photos/seed/protein1/400/400",
+  },
+  {
+    id: 2,
+    name: "Creatine Monohydrate",
+    category: "Performans",
+    price: 450,
+    description: "Güç ve dayanıklılık artışı için mikronize kreatin.",
+    image: "https://picsum.photos/seed/creatine/400/400",
+  },
+  {
+    id: 3,
+    name: "Pre-Workout Energy",
+    category: "Enerji",
+    price: 550,
+    description: "Antrenman öncesi patlayıcı güç ve odaklanma.",
+    image: "https://picsum.photos/seed/preworkout/400/400",
+  },
+  {
+    id: 4,
+    name: "BCAA 4:1:1",
+    category: "Amino Asit",
+    price: 380,
+    description: "Kas toparlanması için gerekli amino asit desteği.",
+    image: "https://picsum.photos/seed/bcaa/400/400",
+  },
+  {
+    id: 5,
+    name: "Multi-Vitamin Pack",
+    category: "Vitamin",
+    price: 220,
+    description: "Sporcular için özel formüle edilmiş günlük vitamin paketi.",
+    image: "https://picsum.photos/seed/vitamin/400/400",
+  },
+  {
+    id: 6,
+    name: "L-Carnitine Liquid",
+    category: "Yağ Yakıcı",
+    price: 400,
+    description: "Metabolizmayı hızlandıran sıvı formda L-Karnitin.",
+    image: "https://picsum.photos/seed/carnitine/400/400",
+  },
+];
+
+export const EXERCISES = [
+  {
+    id: 1,
+    name: "Bench Press",
+    muscleGroup: "Göğüs",
+    difficulty: "Intermediate",
+    description: "Göğüs kaslarını geliştiren temel bileşik egzersiz.",
+    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 2,
+    name: "Squat",
+    muscleGroup: "Bacak",
+    difficulty: "Advanced",
+    description: "Tüm alt vücudu çalıştıran kralların egzersizi.",
+    image: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 3,
+    name: "Deadlift",
+    muscleGroup: "Sırt",
+    difficulty: "Advanced",
+    description: "Posterior chain (arka zincir) için en etkili hareket.",
+    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 4,
+    name: "Bicep Curl",
+    muscleGroup: "Kol",
+    difficulty: "Beginner",
+    description: "Pazı kaslarını izole eden temel hareket.",
+    image: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 5,
+    name: "Shoulder Press",
+    muscleGroup: "Omuz",
+    difficulty: "Intermediate",
+    description: "Omuz başlarını hedefleyen pres hareketi.",
+    image: "https://images.unsplash.com/photo-1532029837066-8059a10aa465?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 6,
+    name: "Plank",
+    muscleGroup: "Karın",
+    difficulty: "Beginner",
+    description: "Core bölgesini güçlendiren statik duruş egzersizi.",
+    image: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 7,
+    name: "Pull Up",
+    muscleGroup: "Sırt",
+    difficulty: "Advanced",
+    description: "Vücut ağırlığı ile sırt kanat kaslarını geliştiren hareket.",
+    image: "https://images.unsplash.com/photo-1598971639058-211a74a96aea?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 8,
+    name: "Tricep Dip",
+    muscleGroup: "Kol",
+    difficulty: "Intermediate",
+    description: "Arka kol ve göğüs altını hedefleyen vücut ağırlığı hareketi.",
+    image: "https://images.unsplash.com/photo-1583454110561-591d2d0b591e?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 9,
+    name: "Lateral Raise",
+    muscleGroup: "Omuz",
+    difficulty: "Beginner",
+    description: "Omuzları genişletmek için yan omuz başı hareketi.",
+    image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 10,
+    name: "Leg Press",
+    muscleGroup: "Bacak",
+    difficulty: "Beginner",
+    description: "Bacak kaslarını güvenli bir şekilde çalıştırmak için makine egzersizi.",
+    image: "https://images.unsplash.com/photo-1576678927484-cc907957088c?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 11,
+    name: "Crunch",
+    muscleGroup: "Karın",
+    difficulty: "Beginner",
+    description: "Üst karın kaslarını hedefleyen temel mekik hareketi.",
+    image: "https://images.unsplash.com/photo-1517963879433-6ad2b056d712?q=80&w=600&auto=format&fit=crop",
+  },
+  {
+    id: 12,
+    name: "Incline Bench Press",
+    muscleGroup: "Göğüs",
+    difficulty: "Intermediate",
+    description: "Üst göğüs kaslarını hedefleyen eğimli sehpa presi.",
+    image: "https://images.unsplash.com/photo-1534367347848-8d91a70c83a0?q=80&w=600&auto=format&fit=crop",
+  }
+];
