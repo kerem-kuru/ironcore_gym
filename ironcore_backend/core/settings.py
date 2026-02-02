@@ -8,9 +8,10 @@ import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gecici-anahtar-buraya')
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gecici-key-qwertfghbnjıuhgnjkl')
 DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
+# Database with dj_database_url for production readiness
 DATABASES = {
     'default': dj_database_url.config(
         default='sqlite:///db.sqlite3', # Lokaldeki yedeğin
@@ -64,13 +65,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
-
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -85,7 +79,7 @@ REST_FRAMEWORK = {
     ],
 }
 
-ALLOWED_HOSTS = ['*']  # Yıldız koyarak şimdilik herkese izin veriyoruz.
+
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
@@ -103,3 +97,6 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# Gemini API Anahtarı (Ortam değişkeninden okunur)
+GEMINI_API_KEY = os.environ.get('GEMINI_API_KEY')

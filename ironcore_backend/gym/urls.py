@@ -8,6 +8,7 @@ from .views import (
     create_contact_message,
     create_order,
     my_orders,
+    chat_with_gemini,
 )
 
 urlpatterns = [
@@ -19,4 +20,5 @@ urlpatterns = [
     path('contact/', create_contact_message, name='create_contact_message'),
     path('orders/create/', create_order, name='create_order'),
     path('orders/my/', my_orders, name='my_orders'),
+    path('chat/', chat_with_gemini, name='chat_with_gemini'),
 ]
