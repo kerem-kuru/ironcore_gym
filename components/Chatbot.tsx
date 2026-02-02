@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { streamGeminiResponse } from '../services/geminiService';
+import axios from 'axios'; // <-- Google SDK yerine bunu kullanıyoruz
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -22,6 +22,7 @@ const Chatbot = () => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
 
+    // 1. Kullanıcı mesajını ekrana bas
     const userMsg = {
       id: Date.now().toString(),
       role: 'user',
@@ -33,31 +34,32 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // Create a placeholder for the bot response
-      const botMsgId = (Date.now() + 1).toString();
-      setMessages(prev => [...prev, { id: botMsgId, role: 'model', text: '' }]);
-
-      const stream = await streamGeminiResponse(
-        messages.map(m => ({ role: m.role, text: m.text })), 
-        userMsg.text
-      );
-
-      let fullText = '';
+      // 2. Bot için boş bir mesaj kutusu oluştur (Loading görünsün diye)
+      // Backend cevabı gelene kadar burası bekleyecek.
       
-      for await (const chunk of stream) {
-        const chunkText = chunk.text;
-        if (chunkText) {
-            fullText += chunkText;
-            setMessages(prev => 
-                prev.map(msg => 
-                    msg.id === botMsgId ? { ...msg, text: fullText } : msg
-                )
-            );
-        }
-      }
+      // 3. Backend'e istek at (Render'daki sunucun)
+      // URL'nin sonundaki /chat-ai/ kısmına dikkat et
+      const response = await axios.post('https://ironcore-gym-backend-olq4.onrender.com/api/chat-ai/', {
+        message: userMsg.text
+      });
+
+      // 4. Backend'den gelen cevabı al ({ reply: "Cevap..." })
+      const botReply = response.data.reply;
+
+      // 5. Mesajı ekrana ekle
+      setMessages(prev => [...prev, { 
+        id: (Date.now() + 1).toString(), 
+        role: 'model', 
+        text: botReply 
+      }]);
 
     } catch (error) {
-      setMessages(prev => [...prev, { id: Date.now().toString(), role: 'model', text: 'Bağlantı koptu asker! Tekrar dene.' }]);
+      console.error("Chat hatası:", error);
+      setMessages(prev => [...prev, { 
+        id: Date.now().toString(), 
+        role: 'model', 
+        text: 'Sunucuyla bağlantı kurulamadı asker! Daha sonra tekrar dene.' 
+      }]);
     } finally {
       setIsLoading(false);
     }
