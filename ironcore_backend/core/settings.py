@@ -4,14 +4,19 @@ Temel alınan: elitstay_backend (Django 6 + DRF + CORS)
 """
 import os
 from pathlib import Path
+import dj_database_url
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = 'django-insecure-ironcore-dev-key-change-in-production-xyz123'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-gecici-anahtar-buraya')
+DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
-DEBUG = True
-
-ALLOWED_HOSTS = []
+DATABASES = {
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3', # Lokaldeki yedeğin
+        conn_max_age=600
+    )
+}
 
 INSTALLED_APPS = [
     'rest_framework',
