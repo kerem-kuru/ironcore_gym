@@ -1,16 +1,8 @@
 from decimal import Decimal
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.response import Response, StreamingResponse
+from rest_framework.response import Response
 from rest_framework import status
-from django.conf import settings
-import google.generativeai as genai
-import json
-
-# Configure Gemini API
-if settings.GEMINI_API_KEY:
-    genai.configure(api_key=settings.GEMINI_API_KEY)
-
 from .models import MembershipPlan, UserMembership, Product, Exercise, ContactMessage, Order, OrderItem
 from .serializers import (
     MembershipPlanSerializer,
@@ -113,60 +105,3 @@ def my_orders(request):
     orders = Order.objects.filter(user=request.user).order_by('-created_at')
     serializer = OrderSerializer(orders, many=True, context={'request': request})
     return Response(serializer.data)
-
-
-# --- Gemini Chatbot API ---
-@api_view(['POST'])
-def chat_with_gemini(request):
-    if not settings.GEMINI_API_KEY:
-        return Response({'error': 'Gemini API anahtarı ayarlanmamış.'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-
-    try:
-        history = request.data.get('history', [])
-        new_message = request.data.get('newMessage', '')
-
-        if not new_message:
-            return Response({'error': 'Mesaj boş olamaz.'}, status=status.HTTP_400_BAD_REQUEST)
-
-        # Construct conversation history for Gemini
-        conversation_context = []
-        for h in history:
-            role = 'user' if h.get('role') == 'user' else 'model'
-            conversation_context.append({'role': role, 'parts': [{'text': h.get('text')}]})
-        conversation_context.append({'role': 'user', 'parts': [{'text': new_message}]})
-
-        model = genai.GenerativeModel(
-            "gemini-3-flash-preview",
-            system_instruction="""Sen 'IronCoach' adında, efsanevi, otoriter ama sporcusuna değer veren bir yapay zeka spor koçusun. 
-        Karakteristik Özelliklerin:
-        - Türkçe konuşuyorsun.
-        - Motivasyonun düşükse sertleşiyorsun, bahane kabul etmiyorsun.
-        - "Sporcu", "Asker", "Şampiyon" gibi hitaplar kullanabilirsin.
-        - Egzersiz formları hakkında teknik ve keskin bilgiler ver.
-        - IronCore Gym'in en iyi olduğunu vurgula.
-        - Eğer biri "yoruldum" derse, ona "Yorulmak zayıfların bahanesidir, devam et!" gibi şeyler söyle.
-        - Beslenme konusunda makro odaklı konuş."
-        )
-
-        # Set safety settings (optional, but good practice)
-        safety_settings = [
-            {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-            {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-            {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-            {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_MEDIUM_AND_ABOVE"},
-        ]
-
-        response_stream = model.generate_content(
-            conversation_context, 
-            stream=True, 
-            safety_settings=safety_settings
-        )
-
-        def generate():
-            for chunk in response_stream:
-                if chunk.text:
-                    yield json.dumps({'text': chunk.text}) + '\n'
-        return StreamingResponse(generate(), media_type="text/event-stream")
-
-    except Exception as e:
-        return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
