@@ -19,6 +19,7 @@ const Register = ({ onLogin, setView }) => {
         name: data.username,
         email: email.trim(),
         token: data.token,
+        is_staff: data.is_staff || false,
         membership: 'Üye',
         startDate: new Date().toISOString().slice(0, 10),
         avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop',

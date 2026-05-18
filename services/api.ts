@@ -183,4 +183,10 @@ export const api = {
     if (!res.ok) throw new Error((data as { error?: string }).error || 'Sipariş oluşturulamadı.');
     return data;
   },
+
+  async getAdminStats() {
+    const res = await fetchWithAuth(`${API_BASE_URL}/auth/admin-stats/`);
+    if (!res.ok) throw new Error('Admin verileri alınamadı.');
+    return res.json();
+  },
 };

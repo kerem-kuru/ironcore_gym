@@ -62,16 +62,24 @@ const Navbar = ({ currentView, setView, cartCount, user }) => {
 
             {user ? (
                 <div className="hidden sm:flex items-center gap-4 pl-6 border-l border-zinc-800">
+                    {user.is_staff && (
+                        <button 
+                            onClick={() => setView('admin')}
+                            className="bg-yellow-500 hover:bg-white text-black px-4 py-2 rounded-lg font-black uppercase text-[10px] tracking-widest transition-all shadow-lg flex items-center gap-2"
+                        >
+                            <i className="fa-solid fa-shield-halved"></i> ADMIN PANELİ
+                        </button>
+                    )}
                     <button 
                         onClick={() => setView('profile')}
                         className="flex items-center gap-3 group"
                     >
                         <div className="text-right">
-                            <span className="block text-white text-[11px] font-black tracking-wider uppercase group-hover:text-yellow-500 transition">{user.name}</span>
-                            <span className="block text-zinc-600 text-[9px] font-bold uppercase">{user.membership}</span>
+                            <span className="block text-white text-[11px] font-black tracking-wider uppercase group-hover:text-yellow-500 transition">{user.username || user.name}</span>
+                            <span className="block text-zinc-600 text-[9px] font-bold uppercase">{user.membership || 'Üye'}</span>
                         </div>
                         <img 
-                            src={user.avatar} 
+                            src={user.avatar || "https://ui-avatars.com/api/?name=" + (user.username || user.name) + "&background=random"} 
                             alt="Profile" 
                             className={`w-11 h-11 rounded-xl border-2 border-zinc-800 group-hover:border-yellow-500 transition duration-500 object-cover ${currentView === 'profile' ? 'border-yellow-500 ring-4 ring-yellow-500/10' : ''}`}
                         />
@@ -120,9 +128,17 @@ const Navbar = ({ currentView, setView, cartCount, user }) => {
                     {item.label}
                 </button>
             ))}
-            <div className="pt-6 border-t border-zinc-900 flex gap-3">
+            <div className="pt-6 border-t border-zinc-900 flex flex-col gap-4">
+                {user && user.is_staff && (
+                    <button 
+                        onClick={() => { setView('admin'); setIsMenuOpen(false); }}
+                        className="w-full bg-yellow-500 text-black py-4 rounded-xl font-black uppercase tracking-widest text-xs flex items-center justify-center gap-2 shadow-lg"
+                    >
+                        <i className="fa-solid fa-shield-halved"></i> ADMIN PANELİ
+                    </button>
+                )}
                 {!user && (
-                    <>
+                    <div className="flex gap-3">
                         <button 
                             onClick={() => { setView('register'); setIsMenuOpen(false); }}
                             className="flex-1 py-4 rounded-xl font-black uppercase tracking-widest text-xs border border-zinc-700 text-zinc-400 hover:text-yellow-500 hover:border-yellow-500"
@@ -135,7 +151,7 @@ const Navbar = ({ currentView, setView, cartCount, user }) => {
                         >
                             Giriş Yap
                         </button>
-                    </>
+                    </div>
                 )}
             </div>
         </div>

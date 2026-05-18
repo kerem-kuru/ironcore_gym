@@ -6,6 +6,7 @@ import AnatomySelector from './components/AnatomySelector';
 import Login from './components/Login';
 import Register from './components/Register';
 import Profile from './components/Profile';
+import AdminDashboard from './components/AdminDashboard';
 import { api } from './services/api';
 import { MEMBERSHIP_PLANS, PRODUCTS, EXERCISES } from './constants';
 
@@ -24,15 +25,31 @@ const App = () => {
   useEffect(() => {
     const savedUser = localStorage.getItem('ironcore_user');
     if (savedUser) {
-        setUser(JSON.parse(savedUser));
+        const parsed = JSON.parse(savedUser);
+        setUser(parsed);
     }
   }, []);
 
   useEffect(() => {
-    api.getMembershipPlans().then(setMembershipPlans);
-    api.getProducts().then(setProducts);
-    api.getExercises().then(setExercises);
+    api.getMembershipPlans().then(setMembershipPlans).catch(() => {});
+    api.getProducts().then(setProducts).catch(() => {});
+    api.getExercises().then(setExercises).catch(() => {});
   }, []);
+
+  useEffect(() => {
+    if (user?.token) {
+      api.getMyMemberships().then(m => {
+        if (m && m.length > 0) {
+          const activePlanName = m[0].plan_name;
+          if (user.membership !== activePlanName) {
+            const updatedUser = { ...user, membership: activePlanName };
+            setUser(updatedUser);
+            localStorage.setItem('ironcore_user', JSON.stringify(updatedUser));
+          }
+        }
+      }).catch(() => {});
+    }
+  }, [user?.token]);
 
   const handleLogin = (userData) => {
       setUser(userData);
@@ -524,6 +541,7 @@ const App = () => {
         {currentView === 'login' && <Login onLogin={handleLogin} setView={setCurrentView} />}
         {currentView === 'register' && <Register onLogin={handleLogin} setView={setCurrentView} />}
         {currentView === 'profile' && <Profile user={user} onLogout={handleLogout} />}
+        {currentView === 'admin' && <AdminDashboard user={user} />}
       </main>
 
       <footer className="bg-black border-t border-zinc-900 py-20 relative z-10 overflow-hidden">

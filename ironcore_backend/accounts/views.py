@@ -18,6 +18,7 @@ def register_user(request):
             'token': token.key,
             'user_id': user.pk,
             'username': user.username,
+            'is_staff': user.is_staff,
         }, status=status.HTTP_201_CREATED)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -36,6 +37,7 @@ def login_user(request):
             'user_id': user.pk,
             'username': user.username,
             'email': user.email or '',
+            'is_staff': user.is_staff,
         })
     return Response({'error': 'Kullanıcı adı veya şifre hatalı!'}, status=status.HTTP_401_UNAUTHORIZED)
 
@@ -63,4 +65,33 @@ def profile_view(request):
         'weight': profile.weight,
         'workouts': profile.workouts,
         'streak': profile.streak,
+    })
+
+from django.db.models import Sum
+from gym.models import Order, UserMembership
+from django.contrib.auth.models import User
+from rest_framework.permissions import IsAdminUser
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated, IsAdminUser])
+def admin_stats_view(request):
+    total_users = User.objects.count()
+    active_memberships = UserMembership.objects.count()
+    total_revenue = Order.objects.aggregate(total=Sum('total'))['total'] or 0
+    total_orders = Order.objects.count()
+
+    recent_orders = Order.objects.select_related('user').order_by('-created_at')[:5]
+    recent_orders_data = [{
+        'id': order.id,
+        'username': order.user.username,
+        'total': order.total,
+        'date': order.created_at.strftime("%Y-%m-%d %H:%M")
+    } for order in recent_orders]
+
+    return Response({
+        'total_users': total_users,
+        'active_memberships': active_memberships,
+        'total_revenue': total_revenue,
+        'total_orders': total_orders,
+        'recent_orders': recent_orders_data
     })
