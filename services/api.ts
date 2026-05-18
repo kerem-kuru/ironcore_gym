@@ -135,6 +135,21 @@ export const api = {
 
   // --- Auth gerektiren istekler ---
 
+  async getProfile() {
+    const res = await fetchWithAuth(`${API_BASE_URL}/auth/profile/`);
+    if (!res.ok) return { height: null, weight: null, workouts: 0, streak: 0 };
+    return res.json();
+  },
+
+  async updateProfile(data: { height?: number; weight?: number; workouts?: number; streak?: number }) {
+    const res = await fetchWithAuth(`${API_BASE_URL}/auth/profile/`, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
+    if (!res.ok) throw new Error('Profil güncellenemedi.');
+    return res.json();
+  },
+
   async getMyMemberships() {
     const res = await fetchWithAuth(`${API_BASE_URL}/memberships/my/`);
     if (!res.ok) throw new Error('Üyelikler yüklenemedi.');

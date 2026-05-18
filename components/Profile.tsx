@@ -5,15 +5,37 @@ import { api } from '../services/api';
 const Profile = ({ user, onLogout }) => {
   const [myMemberships, setMyMemberships] = useState([]);
   const [myOrders, setMyOrders] = useState([]);
+  const [profileData, setProfileData] = useState({ height: null, weight: null });
+  const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [editForm, setEditForm] = useState({ height: '', weight: '' });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!user?.token) return;
-    Promise.all([api.getMyMemberships().catch(() => []), api.getMyOrders().catch(() => [])]).then(([m, o]) => {
+    Promise.all([
+      api.getMyMemberships().catch(() => []), 
+      api.getMyOrders().catch(() => []),
+      api.getProfile().catch(() => ({ height: null, weight: null }))
+    ]).then(([m, o, p]) => {
       setMyMemberships(m);
       setMyOrders(o);
+      setProfileData(p);
+      setEditForm({ height: p.height || '', weight: p.weight || '' });
     }).finally(() => setLoading(false));
   }, [user?.token]);
+
+  const handleSaveProfile = async () => {
+    try {
+      const updated = await api.updateProfile({ 
+        height: editForm.height ? Number(editForm.height) : undefined, 
+        weight: editForm.weight ? Number(editForm.weight) : undefined 
+      });
+      setProfileData(updated);
+      setIsEditingProfile(false);
+    } catch (e) {
+      alert("Hata oluştu, lütfen tekrar deneyin.");
+    }
+  };
 
   if (!user) return null;
 
@@ -104,21 +126,42 @@ const Profile = ({ user, onLogout }) => {
           {/* Main Dashboard - Stats & Siparişlerim */}
           <div className="lg:col-span-8 space-y-10">
             
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                {[
-                    { label: 'Antrenman', val: user.stats?.workouts ?? 0, color: 'text-white', icon: 'fa-dumbbell' },
-                    { label: 'Ağırlık', val: `${user.stats?.weight ?? 0}kg`, color: 'text-white', icon: 'fa-weight-scale' },
-                    { label: 'Streak', val: user.stats?.streak ?? 0, color: 'text-yellow-500', icon: 'fa-fire' },
-                    { label: 'Sipariş', val: myOrders.length, color: 'text-white', icon: 'fa-bag-shopping' }
-                ].map((stat, i) => (
-                    <div key={i} className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl group hover:border-zinc-600 transition duration-300">
-                        <div className="text-zinc-600 mb-6 group-hover:scale-110 transition duration-300">
-                            <i className={`fa-solid ${stat.icon} text-xl`}></i>
-                        </div>
-                        <div className={`text-3xl font-display font-black ${stat.color} mb-1 italic tracking-tighter`}>{stat.val}</div>
-                        <div className="text-zinc-600 text-[9px] font-black uppercase tracking-[0.2em]">{stat.label}</div>
-                    </div>
-                ))}
+            <div>
+               <div className="flex justify-end mb-4">
+                  <button 
+                      onClick={() => isEditingProfile ? handleSaveProfile() : setIsEditingProfile(true)} 
+                      className="text-yellow-500 hover:text-white uppercase text-[10px] tracking-widest font-black transition flex items-center gap-2 bg-zinc-900 px-4 py-2 rounded-xl border border-zinc-800"
+                  >
+                      {isEditingProfile ? <><i className="fa-solid fa-check"></i> KAYDET</> : <><i className="fa-solid fa-pen"></i> DÜZENLE</>}
+                  </button>
+               </div>
+               <div className="grid grid-cols-2 md:grid-cols-5 gap-6">
+                   {[
+                       { id: 'height', label: 'Boy', val: profileData.height ? `${profileData.height}cm` : '-', color: 'text-white', icon: 'fa-ruler-vertical' },
+                       { id: 'weight', label: 'Ağırlık', val: profileData.weight ? `${profileData.weight}kg` : '-', color: 'text-white', icon: 'fa-weight-scale' },
+                       { id: 'workouts', label: 'Antrenman', val: profileData.workouts ?? 0, color: 'text-white', icon: 'fa-dumbbell' },
+                       { id: 'streak', label: 'Streak', val: profileData.streak ?? 0, color: 'text-yellow-500', icon: 'fa-fire' },
+                       { id: 'orders', label: 'Sipariş', val: myOrders.length, color: 'text-white', icon: 'fa-bag-shopping' }
+                   ].map((stat, i) => (
+                       <div key={i} className="bg-zinc-900 border border-zinc-800 p-8 rounded-3xl group hover:border-zinc-600 transition duration-300">
+                           <div className="text-zinc-600 mb-6 group-hover:scale-110 transition duration-300">
+                               <i className={`fa-solid ${stat.icon} text-xl`}></i>
+                           </div>
+                           {isEditingProfile && (stat.id === 'height' || stat.id === 'weight') ? (
+                              <input 
+                                  type="number" 
+                                  className="w-full bg-zinc-950 text-2xl font-display font-black text-white italic tracking-tighter border border-zinc-800 rounded-xl px-2 py-1 outline-none focus:border-yellow-500 mb-1"
+                                  value={editForm[stat.id]}
+                                  onChange={(e) => setEditForm({...editForm, [stat.id]: e.target.value})}
+                                  placeholder={stat.label}
+                              />
+                           ) : (
+                              <div className={`text-3xl font-display font-black ${stat.color} mb-1 italic tracking-tighter`}>{stat.val}</div>
+                           )}
+                           <div className="text-zinc-600 text-[9px] font-black uppercase tracking-[0.2em]">{stat.label}</div>
+                       </div>
+                   ))}
+               </div>
             </div>
 
             {/* Siparişlerim (API) */}
