@@ -15,6 +15,10 @@ class MembershipPlan(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Üyelik Planı'
+        verbose_name_plural = 'Üyelik Planları'
+
 
 class UserMembership(models.Model):
     """Kullanıcının seçtiği üyelik (rezervasyon benzeri)"""
@@ -26,6 +30,10 @@ class UserMembership(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.plan.name}"
+
+    class Meta:
+        verbose_name = 'Kullanıcı Üyeliği'
+        verbose_name_plural = 'Kullanıcı Üyelikleri'
 
 
 class Product(models.Model):
@@ -40,6 +48,10 @@ class Product(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        verbose_name = 'Ürün'
+        verbose_name_plural = 'Ürünler'
+
 
 class Exercise(models.Model):
     """Muscle Wiki egzersiz"""
@@ -51,6 +63,10 @@ class Exercise(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.muscle_group})"
+
+    class Meta:
+        verbose_name = 'Egzersiz'
+        verbose_name_plural = 'Egzersizler'
 
 
 class ContactMessage(models.Model):
@@ -64,6 +80,10 @@ class ContactMessage(models.Model):
     def __str__(self):
         return f"{self.name} - {self.created_at.date()}"
 
+    class Meta:
+        verbose_name = 'İletişim Mesajı'
+        verbose_name_plural = 'İletişim Mesajları'
+
 
 class Order(models.Model):
     """Kullanıcı siparişi (mağaza)"""
@@ -73,6 +93,10 @@ class Order(models.Model):
 
     def __str__(self):
         return f"#{self.id} - {self.user.username}"
+
+    class Meta:
+        verbose_name = 'Sipariş'
+        verbose_name_plural = 'Siparişler'
 
 
 class OrderItem(models.Model):
@@ -84,3 +108,7 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
+
+    class Meta:
+        verbose_name = 'Sipariş Kalemi'
+        verbose_name_plural = 'Sipariş Kalemleri'

@@ -1,5 +1,5 @@
 /** Backend API adresi (Django) */
-export const API_BASE_URL = 'https://ironcore-gym-backend-olq4.onrender.com/api';
+export const API_BASE_URL = 'http://localhost:8000/api';
 
 /** Fallback: API yanıt vermezse kullanılacak sabit veriler */
 export const MEMBERSHIP_PLANS = [
