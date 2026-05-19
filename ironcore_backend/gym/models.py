@@ -42,7 +42,7 @@ class Product(models.Model):
     category = models.CharField(max_length=100)  # Protein, Performans, Enerji vb.
     price = models.DecimalField(max_digits=10, decimal_places=2)
     description = models.TextField(blank=True)
-    image_url = models.URLField(blank=True, help_text='Ürün resmi linki (Pillow gerekmez)')
+    image_url = models.CharField(max_length=500, blank=True, help_text='Ürün resmi URL veya yol (/products/...)')
     is_available = models.BooleanField(default=True)
 
     def __str__(self):
@@ -59,7 +59,8 @@ class Exercise(models.Model):
     muscle_group = models.CharField(max_length=100)  # Göğüs, Bacak, Sırt vb.
     difficulty = models.CharField(max_length=50)  # Beginner, Intermediate, Advanced
     description = models.TextField(blank=True)
-    image_url = models.URLField(blank=True, help_text='Egzersiz resmi linki')
+    image_url = models.CharField(max_length=500, blank=True, help_text='Egzersiz GIF/resim URL veya yol')
+    youtube_id = models.CharField(max_length=20, blank=True, help_text='YouTube form videosu ID')
 
     def __str__(self):
         return f"{self.name} ({self.muscle_group})"

@@ -75,6 +75,7 @@ function normalizeExercise(e: Record<string, unknown>) {
     difficulty: e.difficulty || 'Beginner',
     description: e.description || '',
     image,
+    youtubeId: (e.youtube_id as string) || (e.youtubeId as string) || '',
   };
 }
 

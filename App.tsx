@@ -21,6 +21,7 @@ const App = () => {
   const [membershipPlans, setMembershipPlans] = useState(MEMBERSHIP_PLANS);
   const [products, setProducts] = useState(PRODUCTS);
   const [exercises, setExercises] = useState(EXERCISES);
+  const [formVideoExercise, setFormVideoExercise] = useState(null);
 
   useEffect(() => {
     const savedUser = localStorage.getItem('ironcore_user');
@@ -513,8 +514,18 @@ const App = () => {
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {exercises.filter(ex => !selectedMuscle || ex.muscleGroup === selectedMuscle).map(ex => (
                             <div key={ex.id} className="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden group hover:border-yellow-500/50 transition-all duration-500 shadow-2xl">
-                                <div className="h-56 overflow-hidden relative">
-                                    <img src={ex.image} alt={ex.name} className="w-full h-full object-cover transition duration-700 group-hover:scale-110" />
+                                <div className="h-56 overflow-hidden relative bg-zinc-950">
+                                    <img src={ex.image} alt={ex.name} className="w-full h-full object-contain transition duration-700 group-hover:scale-105" />
+                                    {ex.youtubeId && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setFormVideoExercise(ex)}
+                                            title="Form videosunu izle"
+                                            className="absolute top-4 right-4 w-11 h-11 rounded-full bg-yellow-500 text-black flex items-center justify-center shadow-lg shadow-yellow-500/30 hover:scale-110 hover:bg-white transition-all"
+                                        >
+                                            <i className="fa-solid fa-bell"></i>
+                                        </button>
+                                    )}
                                     <div className="absolute bottom-0 left-0 w-full p-4 bg-gradient-to-t from-black to-transparent">
                                         <span className="text-[10px] bg-yellow-500 text-black px-3 py-1 rounded-full font-black uppercase tracking-tighter">
                                             {ex.difficulty}
@@ -527,8 +538,13 @@ const App = () => {
                                         <span className="text-zinc-600 text-xs font-bold uppercase">{ex.muscleGroup}</span>
                                     </div>
                                     <p className="text-zinc-500 text-sm leading-relaxed mb-6">{ex.description}</p>
-                                    <button className="w-full py-3 bg-zinc-800 hover:bg-yellow-500 text-zinc-400 hover:text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all">
-                                        Formu İzle <i className="fa-solid fa-play ml-2"></i>
+                                    <button
+                                        type="button"
+                                        onClick={() => ex.youtubeId && setFormVideoExercise(ex)}
+                                        disabled={!ex.youtubeId}
+                                        className="w-full py-3 bg-zinc-800 hover:bg-yellow-500 text-zinc-400 hover:text-black font-bold text-xs uppercase tracking-widest rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed"
+                                    >
+                                        Formu İzle <i className="fa-solid fa-bell ml-2"></i>
                                     </button>
                                 </div>
                             </div>
@@ -582,6 +598,48 @@ const App = () => {
             © 2024 IRONCORE LEGION. DESIGNED BY STRONGER MINDS.
         </div>
       </footer>
+
+      {formVideoExercise?.youtubeId && (
+        <div
+          className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/90 backdrop-blur-sm"
+          onClick={() => setFormVideoExercise(null)}
+        >
+          <div
+            className="relative w-full max-w-3xl bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800">
+              <h3 className="text-lg font-display font-bold text-white italic">{formVideoExercise.name} — Form</h3>
+              <button
+                type="button"
+                onClick={() => setFormVideoExercise(null)}
+                className="w-9 h-9 rounded-full bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition"
+              >
+                <i className="fa-solid fa-xmark"></i>
+              </button>
+            </div>
+            <div className="aspect-video bg-black">
+              <iframe
+                title={`${formVideoExercise.name} form videosu`}
+                src={`https://www.youtube.com/embed/${formVideoExercise.youtubeId}?autoplay=1&rel=0`}
+                className="w-full h-full"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              />
+            </div>
+            <div className="px-6 py-4 flex justify-end">
+              <a
+                href={`https://www.youtube.com/watch?v=${formVideoExercise.youtubeId}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs font-bold uppercase tracking-widest text-yellow-500 hover:text-white transition"
+              >
+                YouTube&apos;da aç <i className="fa-solid fa-arrow-up-right-from-square ml-1"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
 
       <Chatbot />
     </div>
