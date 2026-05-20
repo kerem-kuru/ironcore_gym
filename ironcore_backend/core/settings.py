@@ -85,13 +85,19 @@ REST_FRAMEWORK = {
     ],
 }
 
-ALLOWED_HOSTS = ['*']  # Yıldız koyarak şimdilik herkese izin veriyoruz.
+ALLOWED_HOSTS = ['*', 'ironcore-gym-dwqc.onrender.com']
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://localhost:5173",
+    "https://ironcore-gym-zeta.vercel.app",
 ]
 CORS_ALLOW_ALL_ORIGINS = True  # Geliştirme için
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://ironcore-gym-zeta.vercel.app",
+    "https://ironcore-gym-dwqc.onrender.com"
+]
 
 LANGUAGE_CODE = 'tr-tr'
 TIME_ZONE = 'Europe/Istanbul'
