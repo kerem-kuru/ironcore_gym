@@ -20,9 +20,11 @@ const Navbar = ({ currentView, setView, cartCount, user }) => {
             className="flex items-center gap-3 cursor-pointer group"
             onClick={() => setView('home')}
           >
-            <div className="w-12 h-12 bg-yellow-500 rounded-xl flex items-center justify-center transform group-hover:rotate-12 group-hover:scale-110 transition duration-500 shadow-[0_0_20px_rgba(250,204,21,0.2)]">
-              <i className="fa-solid fa-dumbbell text-black text-2xl"></i>
-            </div>
+            <img 
+              src="/logo.png" 
+              alt="IronCore Logo" 
+              className="w-14 h-14 object-contain transform group-hover:rotate-12 group-hover:scale-110 transition duration-500 drop-shadow-[0_0_15px_rgba(250,204,21,0.4)]"
+            />
             <div className="flex flex-col">
               <span className="text-3xl font-display font-black leading-none text-white tracking-tighter italic">IRON<span className="text-yellow-500">CORE</span></span>
               <span className="text-[0.6rem] tracking-[0.4em] text-zinc-600 uppercase font-black">Performance HQ</span>

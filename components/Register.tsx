@@ -43,9 +43,7 @@ const Register = ({ onLogin, setView }) => {
 
       <div className="bg-zinc-900/80 backdrop-blur-md p-8 md:p-12 rounded-2xl border border-zinc-800 shadow-2xl w-full max-w-md relative z-10 animate-fade-in-up">
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-yellow-500 rounded mx-auto flex items-center justify-center mb-4 transform -rotate-3">
-            <i className="fa-solid fa-user-plus text-3xl text-black"></i>
-          </div>
+          <img src="/logo.png" alt="IronCore Logo" className="w-24 h-24 mx-auto object-contain drop-shadow-[0_0_15px_rgba(250,204,21,0.4)] mb-4 transform hover:scale-105 transition duration-500" />
           <h2 className="text-3xl font-display font-bold text-white">YENİ KAYIT</h2>
           <p className="text-zinc-400 text-sm mt-2">IronCore kadrosuna katıl.</p>
         </div>

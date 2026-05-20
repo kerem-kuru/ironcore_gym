@@ -615,8 +615,8 @@ const App = () => {
       <footer className="bg-black border-t border-zinc-900 py-20 relative z-10 overflow-hidden">
         <div className="container mx-auto px-4 grid md:grid-cols-4 gap-12 text-center md:text-left relative z-10">
             <div className="col-span-2">
-                <div className="flex items-center gap-2 mb-6 justify-center md:justify-start">
-                    <div className="w-8 h-8 bg-yellow-500 rounded flex items-center justify-center font-black text-black">I</div>
+                <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
+                    <img src="/logo.png" alt="IronCore Logo" className="w-12 h-12 object-contain drop-shadow-[0_0_10px_rgba(250,204,21,0.3)]" />
                     <span className="text-2xl font-display font-black text-white italic tracking-tighter">IRON<span className="text-yellow-500">CORE</span></span>
                 </div>
                 <p className="text-zinc-500 max-w-sm mb-8">Türkiye'nin en sert ve en disiplinli spor salonu zinciri. Biz sadece vücut değil, karakter inşa ediyoruz.</p>
