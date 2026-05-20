@@ -1,7 +1,5 @@
 /** Backend API adresi (Django) */
-export const API_BASE_URL = import.meta.env.DEV 
-  ? 'http://localhost:8000/api' 
-  : 'https://ironcore-gym-dwqc.onrender.com/api';
+export const API_BASE_URL = 'https://ironcore-gym-dwqc.onrender.com/api';
 
 /** Fallback: API yanıt vermezse kullanılacak sabit veriler */
 export const MEMBERSHIP_PLANS = [
