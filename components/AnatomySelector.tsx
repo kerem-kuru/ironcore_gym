@@ -1,7 +1,7 @@
 import React from 'react';
 
 const AnatomySelector = ({ selectedMuscle, onSelect }) => {
-  
+
   // Helper to determine styling classes based on selection state
   // Using the requested MuscleWiki style:
   // - Unselected: Light gray fill, dark blue/zinc stroke
@@ -9,19 +9,19 @@ const AnatomySelector = ({ selectedMuscle, onSelect }) => {
   // - Hover: Slightly darker fill
   const getPathProps = (muscle) => ({
     className: `transition-all duration-200 cursor-pointer stroke-[#1e3a8a] stroke-[1px]
-      ${selectedMuscle === muscle 
-        ? 'fill-[#3b82f6]' // Blue fill when selected
+      ${selectedMuscle === muscle
+        ? 'fill-[#DEB212]' // Blue fill when selected
         : 'fill-[#e5e7eb] hover:fill-[#d1d5db]'}`, // Light gray fill, darker on hover
     onClick: () => onSelect(muscle)
   });
 
   return (
     <div className="flex flex-col md:flex-row justify-center items-center gap-16 py-10 select-none bg-white/5 rounded-3xl p-8">
-      
+
       {/* --- FRONT VIEW (Anterior) --- */}
       <div className="relative group flex flex-col items-center">
         <h3 className="text-zinc-400 text-xs tracking-[0.2em] font-bold uppercase mb-4">Anterior</h3>
-        
+
         {/* Adjusted ViewBox for a cleaner mannequin look */}
         <svg width="200" height="460" viewBox="0 0 200 460" className="drop-shadow-lg">
           <g>
@@ -70,11 +70,11 @@ const AnatomySelector = ({ selectedMuscle, onSelect }) => {
       {/* --- BACK VIEW (Posterior) --- */}
       <div className="relative group flex flex-col items-center">
         <h3 className="text-zinc-400 text-xs tracking-[0.2em] font-bold uppercase mb-4">Posterior</h3>
-        
+
         <svg width="200" height="460" viewBox="0 0 200 460" className="drop-shadow-lg">
           <g>
-             {/* HEAD BACK */}
-             <path d="M100 20 C112 20 118 32 115 45 C114 50 108 55 100 55 C92 55 86 50 85 45 C82 32 88 20 100 20 Z" className="fill-[#e5e7eb] stroke-[#1e3a8a] stroke-[1px]" />
+            {/* HEAD BACK */}
+            <path d="M100 20 C112 20 118 32 115 45 C114 50 108 55 100 55 C92 55 86 50 85 45 C82 32 88 20 100 20 Z" className="fill-[#e5e7eb] stroke-[#1e3a8a] stroke-[1px]" />
 
             {/* TRAPS/BACK NECK */}
             <path d="M85 45 L70 55 L100 70 L130 55 L115 45 Z" {...getPathProps('Sırt')} />
@@ -90,7 +90,7 @@ const AnatomySelector = ({ selectedMuscle, onSelect }) => {
             <path d="M55 85 L45 115 L55 120 L65 100 Z" {...getPathProps('Kol')} />
             <path d="M145 85 L155 115 L145 120 L135 100 Z" {...getPathProps('Kol')} />
 
-             {/* FOREARMS BACK */}
+            {/* FOREARMS BACK */}
             <path d="M45 115 L35 150 L45 155 L55 120 Z" {...getPathProps('Kol')} />
             <path d="M155 115 L165 150 L155 155 L145 120 Z" {...getPathProps('Kol')} />
 
