@@ -1,20 +1,18 @@
 
 import { GoogleGenAI } from "@google/genai";
-
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
-
+const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_GEMINI_API_KEY });
 export const streamGeminiResponse = async (history, newMessage) => {
   try {
     const model = "gemini-3-flash-preview";
-    
+
     const conversationContext = history.map(h => `${h.role === 'user' ? 'Sporcu' : 'Koç'}: ${h.text}`).join('\n');
-    
+
     const streamResult = await ai.models.generateContentStream({
       model: model,
-      contents: [{ 
-        parts: [{ 
-          text: `Konuşma Akışı:\n${conversationContext}\n\nSporcu Sorusu: ${newMessage}` 
-        }] 
+      contents: [{
+        parts: [{
+          text: `Konuşma Akışı:\n${conversationContext}\n\nSporcu Sorusu: ${newMessage}`
+        }]
       }],
       config: {
         systemInstruction: `Sen 'IronCoach' adında, efsanevi, otoriter ama sporcusuna değer veren bir yapay zeka spor koçusun. 

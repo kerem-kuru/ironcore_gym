@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import axios from 'axios'; // <-- Google SDK yerine bunu kullanıyoruz
+import { streamGeminiResponse } from '../services/geminiService';
 
 const Chatbot = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -34,24 +34,29 @@ const Chatbot = () => {
     setIsLoading(true);
 
     try {
-      // 2. Bot için boş bir mesaj kutusu oluştur (Loading görünsün diye)
-      // Backend cevabı gelene kadar burası bekleyecek.
+      const botMsgId = (Date.now() + 1).toString();
       
-      // 3. Backend'e istek at (Render'daki sunucun)
-      // URL'nin sonundaki /chat-ai/ kısmına dikkat et
-      const response = await axios.post('https://ironcore-gym-backend-olq4.onrender.com/api/chat-ai/', {
-        message: userMsg.text
-      });
-
-      // 4. Backend'den gelen cevabı al ({ reply: "Cevap..." })
-      const botReply = response.data.reply;
-
-      // 5. Mesajı ekrana ekle
+      // İlk başta boş bir mesaj oluşturuyoruz, stream (akış) geldikçe dolacak
       setMessages(prev => [...prev, { 
-        id: (Date.now() + 1).toString(), 
+        id: botMsgId, 
         role: 'model', 
-        text: botReply 
+        text: '' 
       }]);
+
+      // Kendi yerel servisimize istek atıyoruz
+      const stream = await streamGeminiResponse(messages, userMsg.text);
+      
+      let botReply = '';
+      setIsLoading(false); // Veri akmaya başladığında noktacıkları (loading) kapatıyoruz
+
+      for await (const chunk of stream) {
+        if (chunk.text) {
+          botReply += chunk.text;
+          setMessages(prev => prev.map(msg => 
+            msg.id === botMsgId ? { ...msg, text: botReply } : msg
+          ));
+        }
+      }
 
     } catch (error) {
       console.error("Chat hatası:", error);
