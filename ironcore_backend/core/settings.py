@@ -85,7 +85,11 @@ REST_FRAMEWORK = {
     ],
 }
 
-ALLOWED_HOSTS = ['*', 'ironcore-gym-dwqc.onrender.com']
+ALLOWED_HOSTS = [
+    'ironcore-production.up.railway.app', # Railway'in sana verdiği o tam adresi buraya ekle (başında https olmadan)
+    '127.0.0.1',
+    'localhost',
+]
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
