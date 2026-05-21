@@ -1,0 +1,10 @@
+[build]
+builder = "railpack"
+
+[build.railpack]
+# Railpack'e en dıştaki Node.js'i boşverip direkt bu klasöre odaklanmasını emrediyoruz
+subdirectory = "ironcore_backend"
+
+[deploy]
+# Projeyi ayağa kaldıracak gunicorn komutunu buraya çakıyoruz
+startCommand = "gunicorn core.wsgi:application"
