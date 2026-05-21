@@ -106,7 +106,7 @@ const AdminDashboard = ({ user }) => {
                           <h3 className="font-display font-bold text-white uppercase tracking-widest italic text-2xl">SON SİPARİŞLER</h3>
                           <p className="text-zinc-600 text-[10px] uppercase font-bold tracking-widest mt-1">Sisteme Düşen En Güncel Siparişler</p>
                       </div>
-                      <a href="http://localhost:8000/admin/" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 bg-zinc-800 hover:bg-yellow-500 text-white hover:text-black transition-colors px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">
+                      <a href="https://keremkuru.pythonanywhere.com/admin" target="_blank" rel="noreferrer" className="hidden md:flex items-center gap-2 bg-zinc-800 hover:bg-yellow-500 text-white hover:text-black transition-colors px-4 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest">
                           <i className="fa-solid fa-database"></i> Django Admin
                       </a>
                   </div>
