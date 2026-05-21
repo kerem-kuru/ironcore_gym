@@ -1,6 +1,6 @@
 /** Backend API adresi (Django) */
-export const API_BASE_URL = 'https://ironcore-gym-dwqc.onrender.com/api';
 
+export const API_BASE_URL = 'https://keremkuru.pythonanywhere.com/api';
 /** Fallback: API yanıt vermezse kullanılacak sabit veriler */
 export const MEMBERSHIP_PLANS = [
   {
