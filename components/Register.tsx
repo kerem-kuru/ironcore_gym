@@ -5,6 +5,7 @@ const Register = ({ onLogin, setView }) => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [gender, setGender] = useState('erkek');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
 
@@ -22,7 +23,9 @@ const Register = ({ onLogin, setView }) => {
         is_staff: data.is_staff || false,
         membership: 'Üye',
         startDate: new Date().toISOString().slice(0, 10),
-        avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop',
+        avatar: gender === 'kadin' 
+          ? '/kadin_profil.png'
+          : 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop',
         stats: { workouts: 0, streak: 0, weight: 0 },
       };
       onLogin(user);
@@ -91,6 +94,23 @@ const Register = ({ onLogin, setView }) => {
                 required
                 minLength={6}
               />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-zinc-400 text-xs font-bold uppercase tracking-wider mb-2">Cinsiyet</label>
+            <div className="relative">
+              <i className="fa-solid fa-venus-mars absolute left-4 top-3.5 text-zinc-500"></i>
+              <select
+                value={gender}
+                onChange={(e) => setGender(e.target.value)}
+                className="w-full bg-zinc-950 border border-zinc-800 text-white pl-10 pr-4 py-3 rounded focus:outline-none focus:border-yellow-500 transition-colors appearance-none"
+              >
+                <option value="erkek">Erkek</option>
+                <option value="kadin">Kadın</option>
+                <option value="diger">Belirtmek İstemiyorum</option>
+              </select>
+              <i className="fa-solid fa-chevron-down absolute right-4 top-4 text-zinc-500 pointer-events-none text-xs"></i>
             </div>
           </div>
 
