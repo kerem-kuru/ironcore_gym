@@ -100,11 +100,11 @@ const Login = ({ onLogin, setView }) => {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-zinc-500 text-xs">
+        <div className="mt-6 text-center text-zinc-500 text-xs relative z-20">
           Hesabın yok mu?{' '}
-          <span onClick={() => setView('register')} className="text-yellow-500 cursor-pointer hover:underline font-bold">
+          <button type="button" onClick={() => setView('register')} className="text-yellow-500 cursor-pointer hover:underline font-bold focus:outline-none">
             Yeni kayıt oluştur
-          </span>
+          </button>
         </div>
       </div>
     </div>

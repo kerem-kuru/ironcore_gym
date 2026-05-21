@@ -136,11 +136,11 @@ const Register = ({ onLogin, setView }) => {
           </button>
         </form>
 
-        <div className="mt-6 text-center text-zinc-500 text-xs">
+        <div className="mt-6 text-center text-zinc-500 text-xs relative z-20">
           Zaten hesabın var mı?{' '}
-          <span onClick={() => setView('login')} className="text-yellow-500 cursor-pointer hover:underline">
+          <button type="button" onClick={() => setView('login')} className="text-yellow-500 cursor-pointer hover:underline font-bold focus:outline-none">
             Giriş yap
-          </span>
+          </button>
         </div>
       </div>
     </div>
