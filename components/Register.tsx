@@ -24,7 +24,7 @@ const Register = ({ onLogin, setView }) => {
         membership: 'Üye',
         startDate: new Date().toISOString().slice(0, 10),
         avatar: gender === 'kadin' 
-          ? '/kadin_profil.png'
+          ? 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&auto=format&fit=crop'
           : 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?q=80&w=200&auto=format&fit=crop',
         stats: { workouts: 0, streak: 0, weight: 0 },
       };
